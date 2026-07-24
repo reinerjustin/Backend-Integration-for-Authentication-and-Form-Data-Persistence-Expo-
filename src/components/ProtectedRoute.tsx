@@ -1,32 +1,50 @@
 import { router } from "expo-router";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { ActivityIndicator, View } from "react-native";
 
+interface ProtectedRouteProps {
+    children: ReactNode;
+}
+
 export default function ProtectedRoute({
     children
-}:{
-    children:React.ReactNode
-}){
-    const{
+}: ProtectedRouteProps) {
+    const {
         user,
         loading
     } = useAuth();
 
-    useEffect(()=>{
-        router.replace("/signin");
-    },[loading,user]);
+    useEffect(()=> {
+        if (!loading && !user) {
+            router.replace("/signin");
+        }
+    }, [loading, user]);
 
-    if(loading){
-        return(
-            <View>
-                <ActivityIndicator size="large"/>
+    if (loading) {
+        return (
+            <View style = {{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "f5f7fa"
+            }}
+            >
+                <ActivityIndicator
+                    size = "large"
+                    color = "2563eb"
+                />
             </View>
         );
     }
-    if(!user){
+
+    if (!user) {
         return null;
     }
 
-    return children;
+    return (
+        <>
+            {children}
+        </>
+    );
 }
