@@ -1,8 +1,9 @@
-import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from "react-native";
+import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView, Alert } from "react-native";
 import { Formik } from "formik";
 import { employeeSchema } from "@/validation/employeeSchema";
 import { router } from "expo-router";
 import { styles } from "@/style/Shared";
+import { useAuth } from "@/context/AuthContext";
 
 interface EmployeeFormValues {
     employeeId: string;
@@ -26,16 +27,12 @@ const initialValues: EmployeeFormValues = {
     dateOfHire: "",
 };
 
-const mockApi = () => new Promise((resolve) => 
-    setTimeout(resolve, 2000));
-
 function EmployeeForm() {
+    const { logout } = useAuth();
     const handleSubmit = async (values: EmployeeFormValues, 
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void}) => {
         try {
             console.log(values);
-
-            await mockApi();
 
             alert("Employee information submitted successfully!");
 
@@ -44,12 +41,33 @@ function EmployeeForm() {
             setSubmitting(false);
         } 
     };
+    const handleLogout = async() => {
+        try {
+            await logout();
+            router.replace("/signin");
+        } catch(error) {
+            Alert.alert(
+                "Logout failed",
+                "Unable to sign out. Please try again."
+            );
+        }
+    };
 
     return (
         <View style={styles.alignment}>
             <View style={styles.card}>
                 <ScrollView>
                     <Text style={styles.title}>Employee Information</Text>
+                    
+                    <Pressable
+                        style = {styles.secondaryButton}
+                        onPress={handleLogout}
+                    >
+                        <Text style={styles.secondaryButtonText}>
+                            Sign Out
+                        </Text>
+                    </Pressable>
+
                     <Formik<EmployeeFormValues>
                         initialValues={initialValues}
                         validationSchema={employeeSchema}
