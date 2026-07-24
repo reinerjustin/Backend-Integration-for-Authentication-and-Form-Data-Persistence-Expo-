@@ -1,9 +1,11 @@
-import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from "react-native";
+import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView, Alert } from "react-native";
 import { Formik } from "formik";
 import { signUpSchema } from "@/validation/authSchema";
 import { router } from "expo-router";
 import { useState } from "react";
 import { styles } from "@/style/Shared";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/config";
 
 const initialValues = {
     fullName: "",
@@ -12,27 +14,58 @@ const initialValues = {
     confirmPassword: "",
 };
 
-const mockApi = () => new Promise((resolve) =>
-    setTimeout(resolve, 2000));
-
 export default function SignUpScreen() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = async (values: typeof initialValues,
         { setSubmitting } : { setSubmitting: (isSubmitting: boolean) => void }
     ) => {
         try {
-            console.log(values);
+            await createUserWithEmailAndPassword(
+                auth,
+                values.email,
+                values.password
+            );
 
-            await mockApi();
+            Alert.alert(
+                "Account Created",
+                "Your account has been created successfully."
+            );
 
-            router.push("/signin");
+            router.replace("/signin");
+        } catch(error:any) {
+            let message = "Something went wrong. Please try again.";
+
+            switch(error.code){
+                case "auth/email-already-in-use":
+                    message = "This email already exists.";
+                    break;
+
+                case "auth/invalid-email":
+                    message = "Please enter a valid email address (e.g., name@example.com).";
+                    break;
+                
+                case "auth/weak-password":
+                    message = "Password must be at least 6 characters.";
+                    break;
+
+                case "auth/network-request-failed":
+                    message = "Network error. Check your internet connection.";
+                    break;
+
+                default:
+                    message = error.message;
+            }
+
+            Alert.alert(
+                "Sign Up Failed",
+                message
+            );
         } finally {
             setSubmitting(false);
         }
     };
-
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     return (
         <View style={styles.alignment}>
