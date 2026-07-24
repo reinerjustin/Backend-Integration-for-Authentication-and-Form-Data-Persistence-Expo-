@@ -1,20 +1,70 @@
-import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView } from "react-native";
+import { View, Text, TextInput, Pressable, ActivityIndicator, ScrollView, Alert } from "react-native";
 import { Formik } from "formik";
 import { router } from "expo-router";
 import { signInSchema } from "@/validation/authSchema";
 import { useState } from "react";
 import { styles } from "../style/Shared";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/config";
 
 const initialValues = {
     email: "",
     password: "",
 };
 
-const mockApi = () => new Promise((resolve) => 
-    setTimeout(resolve, 1000));
-
 export default function SignInScreen() {
     const [showPassword, setShowPassword] = useState(false);
+    const handleSubmit = async (
+        values: typeof initialValues,
+        {
+            setSubmitting
+        }: {
+            setSubmitting:(isSubmitting:boolean)=>void
+        }
+    ) => {
+        try {
+            await signInWithEmailAndPassword(
+                auth,
+                values.email,
+                values.password
+            );
+            router.replace("/employee");
+        } catch(error:any) {
+            let message = "Something went wrong. Please try again.";
+
+            switch(error.code) {
+                case "auth/invalid-email":
+                    message = "Please enter a valid email address (e.g., name@example.com)."
+                    break;
+
+                case "auth/invalid-credential":
+                    message = "Invalid email or password.";
+                    break;
+
+                case "auth/user-not-found":
+                    message = "No account exists with this email.";
+                    break;
+
+                case "auth/wrong-password":
+                    message = "Incorrect password. Try again.";
+                    break;
+
+                case "auth/network-request-failed":
+                    message = "Network error. Check your internet connection."
+                    break;
+                
+                default:
+                    message = error.message;
+            }
+
+            Alert.alert(
+                "Sign In Failed",
+                message
+            );
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
         <View style={styles.alignment}>
@@ -28,17 +78,7 @@ export default function SignInScreen() {
                         validateOnMount
                         validateOnChange
                         validateOnBlur
-                        onSubmit={async (values, { setSubmitting }) => {
-                            try {
-                                console.log(values);
-
-                                await mockApi();
-                                
-                                router.push("/employee");
-                            } finally {
-                            setSubmitting(false);
-                            }
-                        }}
+                        onSubmit={handleSubmit}
                     >
                         {({
                             handleChange,
