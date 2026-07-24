@@ -47,7 +47,7 @@ export default function SignUpScreen() {
                     break;
                 
                 case "auth/weak-password":
-                    message = "Password must be at least 6 characters.";
+                    message = "Password is too weak.";
                     break;
 
                 case "auth/network-request-failed":
@@ -182,7 +182,7 @@ export default function SignUpScreen() {
                                     {isSubmitting ? (
                                         <View style={styles.loadingRow}>
                                             <ActivityIndicator />
-                                            <Text style={styles.loadingText}>Signing up...</Text>
+                                            <Text style={styles.loadingText}>Creating account...</Text>
                                         </View>
                                     ) : (
                                         <Text style={styles.loadingText}>Sign Up</Text>
