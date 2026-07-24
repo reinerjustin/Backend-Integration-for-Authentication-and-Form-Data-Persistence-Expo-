@@ -1,5 +1,12 @@
 import EmployeeForm from "@/screens/EmployeeForm";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Employee() {
-    return <EmployeeForm />;
+    return (
+        <ProtectedRoute>
+
+            <EmployeeForm />
+
+        </ProtectedRoute>
+    );
 }
