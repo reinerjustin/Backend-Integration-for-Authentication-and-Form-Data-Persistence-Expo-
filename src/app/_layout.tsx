@@ -11,7 +11,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
 
   if (loading) {
     return (
@@ -33,10 +33,12 @@ function RootLayoutNav() {
       <Stack.Screen name="index" options={{ title: "Home" }} />
       <Stack.Screen name="signin" options={{ title: "Sign In" }} />
       <Stack.Screen name="signup" options={{ title: "Sign Up" }} />
-      <Stack.Screen
-        name="employee"
-        options={{ title: "Employee Information" }}
-      />
+      <Stack.Protected guard={!!user}>
+        <Stack.Screen
+          name="employee"
+          options={{ title: "Employee Information" }}
+        />
+      </Stack.Protected>
     </Stack>
   );
 }
