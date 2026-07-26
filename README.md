@@ -38,11 +38,6 @@ npm install
 ```
 npx expo start
 ```
- 
-## Test account
-email: tester.beta@gmail.com
-password: Tester@123
-
 ## CRUD checklist
 - Create — submit employee form <br>
 - Read — employee list + details screen <br>
