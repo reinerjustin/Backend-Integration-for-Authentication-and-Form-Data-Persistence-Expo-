@@ -71,6 +71,17 @@ function EmployeeForm() {
                     <Text style={styles.title}>Employee Information</Text>
                     
                     <Pressable
+                        style={styles.secondaryButton}
+                        onPress={() => router.push("/employees")}
+                    >
+
+                        <Text style={styles.secondaryButtonText}>
+                            View Employee Records
+                        </Text>
+
+                    </Pressable>
+                    
+                    <Pressable
                         style = {styles.secondaryButton}
                         onPress={handleLogout}
                     >
