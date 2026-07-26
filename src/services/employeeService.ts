@@ -1,4 +1,4 @@
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 export interface EmployeeData {
@@ -10,6 +10,11 @@ export interface EmployeeData {
     positionTitle: string;
     department: string;
     dateOfHire: string;
+}
+
+export interface Employee extends EmployeeData {
+    id: string;
+    userId: string;
 }
 
 export async function createEmployee(
@@ -28,6 +33,24 @@ export async function createEmployee(
 
         return docRef.id;
     } catch(error) {
+        throw error;
+    }
+}
+
+export async function getEmployees(userId: string): Promise<Employee[]> {
+    try {
+        const q = query(
+            collection(db, "employees"),
+            where("userId", "==", userId)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        return querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...(doc.data() as Omit<Employee, "id">),
+        }));
+    } catch (error) {
         throw error;
     }
 }
