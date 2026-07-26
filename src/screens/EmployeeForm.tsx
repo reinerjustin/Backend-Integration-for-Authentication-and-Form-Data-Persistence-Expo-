@@ -44,14 +44,14 @@ function EmployeeForm() {
 
             alert("Employee information submitted successfully!");
 
-            router.push("/");
+            router.replace("/employees");
         } catch(error:any) {
             alert("Submission failed. Please check your internet connection and try again.");
         } finally {
             setSubmitting(false);
         } 
     };
-    
+
     const handleLogout = async() => {
         try {
             await logout();
