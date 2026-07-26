@@ -4,6 +4,7 @@ import { employeeSchema } from "@/validation/employeeSchema";
 import { router } from "expo-router";
 import { styles } from "@/style/Shared";
 import { useAuth } from "@/context/AuthContext";
+import { createEmployee } from "@/services/employeeService";
 
 interface EmployeeFormValues {
     employeeId: string;
@@ -28,19 +29,29 @@ const initialValues: EmployeeFormValues = {
 };
 
 function EmployeeForm() {
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
     const handleSubmit = async (values: EmployeeFormValues, 
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void}) => {
         try {
-            console.log(values);
+            if(!user) {
+                alert("You must be logged in to submit.");
+                return;
+            }
+
+            await createEmployee(
+                values, user.uid
+            );
 
             alert("Employee information submitted successfully!");
 
             router.push("/");
+        } catch(error:any) {
+            alert("Submission failed. Please check your internet connection and try again.");
         } finally {
             setSubmitting(false);
         } 
     };
+    
     const handleLogout = async() => {
         try {
             await logout();
