@@ -45,6 +45,10 @@ function RootLayoutNav() {
           name="employees"
           options={{ title: "Employee Records"}}
         />
+        <Stack.Screen
+          name="employee-details"
+          options={{ title: "Employee Details"}}
+        />
       </Stack.Protected>
     </Stack>
   );
