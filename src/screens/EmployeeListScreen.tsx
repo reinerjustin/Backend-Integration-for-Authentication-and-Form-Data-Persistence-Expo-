@@ -1,18 +1,18 @@
 import { useAuth } from "@/context/AuthContext";
 import {
-    Employee,
-    deleteEmployeeById,
-    getEmployees,
+  Employee,
+  deleteEmployeeById,
+  getEmployees,
 } from "@/services/employeeService";
 import { styles } from "@/style/Shared";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    Pressable,
-    Text,
-    View,
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  Text,
+  View,
 } from "react-native";
 
 export default function EmployeeListScreen() {
@@ -94,56 +94,51 @@ export default function EmployeeListScreen() {
   }
 
   return (
-    <FlatList contentContainerStyle={{
+    <FlatList
+      contentContainerStyle={{
         padding: 24,
         backgroundColor: "#f5f7fa",
-    }}
-
+      }}
       data={employees}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <Pressable
-          style={styles.card}
-          onPress={() =>
-            router.push({
-              pathname: "/employee-details",
-              params: {
-                id: item.id,
-              },
-            })
-          }
-        >
-          <Text style={styles.title}>{item.fullName}</Text>
+        <View style={styles.cardSpacing}>
+          <Pressable
+            style={styles.card}
+            onPress={() =>
+              router.push({
+                pathname: "/employee-details",
+                params: {
+                  id: item.id,
+                },
+              })
+            }
+          >
+            <Text style={styles.title}>{item.fullName}</Text>
 
-          <Text>Employee ID: {item.employeeId}</Text>
+            <Text>Employee ID: {item.employeeId}</Text>
 
-          <Text>Department: {item.department}</Text>
+            <Text>Department: {item.department}</Text>
 
-          <Text>Position: {item.positionTitle}</Text>
+            <Text>Position: {item.positionTitle}</Text>
 
-          <Text>Email: {item.email}</Text>
-          
-          <Pressable 
-            style={styles.primaryButton} 
-            onPress={() => handleUpdate(item)}>
-            
-            <Text style={styles.loadingText}>
-                Update
-            </Text>
+            <Text>Email: {item.email}</Text>
 
+            <Pressable
+              style={styles.primaryButton}
+              onPress={() => handleUpdate(item)}
+            >
+              <Text style={styles.loadingText}>Update</Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.secondaryButton}
+              onPress={() => handleDelete(item.id)}
+            >
+              <Text style={styles.secondaryButtonText}>Delete</Text>
+            </Pressable>
           </Pressable>
-
-          <Pressable 
-            style={styles.secondaryButton}
-            onPress={() => handleDelete(item.id)}>
-            
-            <Text style={styles.secondaryButtonText}>
-                Delete
-            </Text>
-
-          </Pressable>
-          
-        </Pressable>
+        </View>
       )}
     />
   );
