@@ -5,6 +5,13 @@ Marc Edison Estaca <br>
 Reiner Justin Realica <br>
 Joshua Dyck <br>
 
+## Setup Steps
+
+to run the application write <br>
+npm install <br>
+create .env <br>
+npx expo start <br>
+
 ## Assignment Overview 
 
 In this assignment, you will connect the forms developed in Assignment 3 to a backend service. Your implementation must support authentication (sign-up and sign-in) and must allow storing and retrieving user-submitted form data from the backend. Backend services are required for this assignment. 
@@ -19,3 +26,7 @@ Upon successful completion of this assignment, students will be able to: <br>
 • Implement protected screens/routes that require authentication  <br>
 • Handle API/network errors, loading states, and user feedback professionally  <br>
 • Apply secure configuration practices (environment variables, secrets management)  <br>
+
+## test account Credentials
+username:     <br>
+password: 
