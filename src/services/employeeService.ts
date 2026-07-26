@@ -8,6 +8,7 @@ import {
   getDocs,
   query,
   serverTimestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -77,6 +78,33 @@ export async function getEmployeeById(id: string) {
 export async function deleteEmployeeById(id: string) {
   try {
     await deleteDoc(doc(db, "employees", id));
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function updateEmployee(
+  id: string,
+  employeeData: EmployeeData,
+  userId: string,
+) {
+  try {
+    const docRef = doc(db, "employees", id);
+
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) {
+      throw new Error("Employee not found.");
+    }
+
+    if (snapshot.data().userId !== userId) {
+      throw new Error("You do not have permission to update this employee.");
+    }
+
+    await updateDoc(docRef, {
+      ...employeeData,
+      updatedAt: serverTimestamp(),
+    });
   } catch (error) {
     throw error;
   }
