@@ -5,6 +5,9 @@ Marc Edison Estaca <br>
 Reiner Justin Realica <br>
 Joshua Dyck <br>
 
+## Backend Choice 
+we used Firebase (Authentication + Firestore)
+
 ## Setup Steps
 
 to run the application write <br>
@@ -26,6 +29,19 @@ Upon successful completion of this assignment, students will be able to: <br>
 • Implement protected screens/routes that require authentication  <br>
 • Handle API/network errors, loading states, and user feedback professionally  <br>
 • Apply secure configuration practices (environment variables, secrets management)  <br>
+
+## CRUD checklist
+- Create — submit employee form <br>
+- Read — employee list + details screen <br>
+- Update — edit from list <br>
+- Delete — with confirmation modal
+
+## Features implemented 
+ - Authentication
+ - protected routes
+ - session restore
+ - empty states
+ - error handling
 
 ## test account Credentials
 username:     <br>
