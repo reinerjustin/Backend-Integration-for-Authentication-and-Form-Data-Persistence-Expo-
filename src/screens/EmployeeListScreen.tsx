@@ -83,7 +83,17 @@ export default function EmployeeListScreen() {
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
 
-                <View style={styles.card}>
+                <Pressable 
+                    style={styles.card}
+                    onPress={() =>
+                        router.push({
+                            pathname: "/employee-details",
+                            params: {
+                                id: item.id
+                            }
+                        })
+                    }
+                >
 
                     <Text style={styles.title}>
                         {item.fullName}
@@ -105,7 +115,7 @@ export default function EmployeeListScreen() {
                         Email: {item.email}
                     </Text>
 
-                </View>
+                </Pressable>
             )}
         />
     );
