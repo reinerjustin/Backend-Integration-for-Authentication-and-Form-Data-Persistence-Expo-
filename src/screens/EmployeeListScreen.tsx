@@ -69,7 +69,7 @@ export default function EmployeeListScreen() {
   if (error) {
     return (
       <View style={styles.alignment}>
-        <Text>{error}</Text>
+        <Text style={styles.error}>{error}</Text>
 
         <Pressable style={styles.primaryButton} onPress={loadEmployees}>
           <Text style={styles.loadingText}>Retry</Text>
@@ -81,7 +81,7 @@ export default function EmployeeListScreen() {
   if (employees.length === 0) {
     return (
       <View style={styles.alignment}>
-        <Text>No submission yet.</Text>
+        <Text style={styles.title}>No submission yet.</Text>
 
         <Pressable
           style={styles.primaryButton}
@@ -94,7 +94,11 @@ export default function EmployeeListScreen() {
   }
 
   return (
-    <FlatList
+    <FlatList contentContainerStyle={{
+        padding: 24,
+        backgroundColor: "#f5f7fa",
+    }}
+
       data={employees}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
@@ -118,12 +122,27 @@ export default function EmployeeListScreen() {
           <Text>Position: {item.positionTitle}</Text>
 
           <Text>Email: {item.email}</Text>
-          <Pressable onPress={() => handleUpdate(item)}>
-            <Text>Update</Text>
+          
+          <Pressable 
+            style={styles.primaryButton} 
+            onPress={() => handleUpdate(item)}>
+            
+            <Text style={styles.loadingText}>
+                Update
+            </Text>
+
           </Pressable>
-          <Pressable onPress={() => handleDelete(item.id)}>
-            <Text>Delete</Text>
+
+          <Pressable 
+            style={styles.secondaryButton}
+            onPress={() => handleDelete(item.id)}>
+            
+            <Text style={styles.secondaryButtonText}>
+                Delete
+            </Text>
+
           </Pressable>
+          
         </Pressable>
       )}
     />
