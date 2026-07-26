@@ -30,6 +30,15 @@ export default function EmployeeListScreen() {
     }
   };
 
+  const handleUpdate = (employee: Employee) => {
+    router.push({
+      pathname: "/employee",
+      params: {
+        employee: JSON.stringify(employee),
+      },
+    });
+  };
+
   const loadEmployees = async () => {
     if (!user) return;
 
@@ -109,8 +118,11 @@ export default function EmployeeListScreen() {
           <Text>Position: {item.positionTitle}</Text>
 
           <Text>Email: {item.email}</Text>
+          <Pressable onPress={() => handleUpdate(item)}>
+            <Text>Update</Text>
+          </Pressable>
           <Pressable onPress={() => handleDelete(item.id)}>
-            <Text>Destroy</Text>
+            <Text>Delete</Text>
           </Pressable>
         </Pressable>
       )}
