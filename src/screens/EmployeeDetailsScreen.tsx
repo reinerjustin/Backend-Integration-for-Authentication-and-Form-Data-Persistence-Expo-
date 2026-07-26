@@ -38,27 +38,31 @@ export default function EmployeeDetailsScreen() {
     );
   }
 
+  const details = [
+    { label: "Employee ID", value: employee.employeeId },
+    { label: "Address", value: employee.address },
+    { label: "Email", value: employee.email },
+    { label: "Phone", value: employee.phone },
+    { label: "Position", value: employee.positionTitle },
+    { label: "Department", value: employee.department },
+    { label: "Date of Hire", value: employee.dateOfHire },
+  ];
+
   return (
-    // <ScrollView style={styles.alignment}>
+    <View style={styles.alignment}>
+      <View style={styles.card}>
+        <Text style={styles.title}>{employee.fullName}</Text>
 
-    <View style={styles.card}>
-      <Text style={styles.title}>{employee.fullName}</Text>
+        <View style={styles.detailsMargin}>
+          {details.map((item) => (
+            <View key={item.label} style={styles.detailRow}>
+              <Text style={styles.detailLabel}>{item.label}</Text>
 
-      <Text>Employee ID: {employee.employeeId}</Text>
-
-      <Text>Address: {employee.address}</Text>
-
-      <Text>Email: {employee.email}</Text>
-
-      <Text>Phone: {employee.phone}</Text>
-
-      <Text>Position: {employee.positionTitle}</Text>
-
-      <Text>Department: {employee.department}</Text>
-
-      <Text>Date of Hire: {employee.dateOfHire}</Text>
+              <Text style={styles.detailValue}>{item.value}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
     </View>
-
-    // </ScrollView>
   );
 }
