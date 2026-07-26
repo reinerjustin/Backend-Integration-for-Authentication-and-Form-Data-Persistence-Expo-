@@ -1,4 +1,4 @@
-import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 export interface EmployeeData {
@@ -53,4 +53,19 @@ export async function getEmployees(userId: string): Promise<Employee[]> {
     } catch (error) {
         throw error;
     }
+}
+
+export async function getEmployeeById(id: string) {
+    const docRef = doc(db, "employees", id);
+
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) {
+        throw new Error("Employee not found.");
+    }
+
+    return {
+        id: snapshot.id,
+        ...(snapshot.data() as Omit<Employee, "id">),
+    };
 }
