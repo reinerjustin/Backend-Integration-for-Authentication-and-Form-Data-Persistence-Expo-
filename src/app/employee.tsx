@@ -1,14 +1,17 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
-import EmployeeForm from "@/screens/EmployeeForm";
+import EmployeeForm, { EmployeeRecord } from "@/screens/EmployeeForm";
+import { useLocalSearchParams } from "expo-router";
 
 export default function Employee() {
-  
-    return (
+  const { employee } = useLocalSearchParams();
 
-        <ProtectedRoute>
+  const employeeData: EmployeeRecord | undefined = employee
+    ? JSON.parse(employee as string)
+    : undefined;
 
-            <EmployeeForm />
-        
-        </ProtectedRoute>
+  return (
+    <ProtectedRoute>
+      <EmployeeForm employee={employeeData} />
+    </ProtectedRoute>
   );
 }
