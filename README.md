@@ -13,9 +13,9 @@ This assignment is intentionally designed to reflect real-world application deve
 
 ## Learning Outcomes 
 
-Upon successful completion of this assignment, students will be able to: 
-• Integrate a mobile application with a backend authentication service 
-• Persist and retrieve structured data from a backend database 
-• Implement protected screens/routes that require authentication 
-• Handle API/network errors, loading states, and user feedback professionally 
-• Apply secure configuration practices (environment variables, secrets management) 
+Upon successful completion of this assignment, students will be able to: <br>
+• Integrate a mobile application with a backend authentication service  <br>
+• Persist and retrieve structured data from a backend database  <br>
+• Implement protected screens/routes that require authentication  <br>
+• Handle API/network errors, loading states, and user feedback professionally  <br>
+• Apply secure configuration practices (environment variables, secrets management)  <br>
