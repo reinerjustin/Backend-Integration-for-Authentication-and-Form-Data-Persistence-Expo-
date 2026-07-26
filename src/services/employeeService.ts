@@ -1,71 +1,83 @@
-import { collection, addDoc, serverTimestamp, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  where,
+} from "firebase/firestore";
 
 export interface EmployeeData {
-    employeeId: string;
-    fullName: string;
-    address: string;
-    email: string;
-    phone: string;
-    positionTitle: string;
-    department: string;
-    dateOfHire: string;
+  employeeId: string;
+  fullName: string;
+  address: string;
+  email: string;
+  phone: string;
+  positionTitle: string;
+  department: string;
+  dateOfHire: string;
 }
 
 export interface Employee extends EmployeeData {
-    id: string;
-    userId: string;
+  id: string;
+  userId: string;
 }
 
 export async function createEmployee(
-    employeeData: EmployeeData,
-    userId: string
+  employeeData: EmployeeData,
+  userId: string,
 ) {
-    try {
-        const docRef = await addDoc(
-            collection(db, "employees"),
-            {
-                ...employeeData,
-                userId: userId,
-                createdAt: serverTimestamp()
-            }
-        );
+  try {
+    const docRef = await addDoc(collection(db, "employees"), {
+      ...employeeData,
+      userId: userId,
+      createdAt: serverTimestamp(),
+    });
 
-        return docRef.id;
-    } catch(error) {
-        throw error;
-    }
+    return docRef.id;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function getEmployees(userId: string): Promise<Employee[]> {
-    try {
-        const q = query(
-            collection(db, "employees"),
-            where("userId", "==", userId)
-        );
+  try {
+    const q = query(collection(db, "employees"), where("userId", "==", userId));
 
-        const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(q);
 
-        return querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...(doc.data() as Omit<Employee, "id">),
-        }));
-    } catch (error) {
-        throw error;
-    }
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<Employee, "id">),
+    }));
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function getEmployeeById(id: string) {
-    const docRef = doc(db, "employees", id);
+  const docRef = doc(db, "employees", id);
 
-    const snapshot = await getDoc(docRef);
+  const snapshot = await getDoc(docRef);
 
-    if (!snapshot.exists()) {
-        throw new Error("Employee not found.");
-    }
+  if (!snapshot.exists()) {
+    throw new Error("Employee not found.");
+  }
 
-    return {
-        id: snapshot.id,
-        ...(snapshot.data() as Omit<Employee, "id">),
-    };
+  return {
+    id: snapshot.id,
+    ...(snapshot.data() as Omit<Employee, "id">),
+  };
+}
+
+export async function deleteEmployeeById(id: string) {
+  try {
+    await deleteDoc(doc(db, "employees", id));
+  } catch (error) {
+    throw error;
+  }
 }
