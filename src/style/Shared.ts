@@ -142,4 +142,5 @@ export const styles = StyleSheet.create({
     flex: 1,
     textAlign: "right",
   },
+  cardSpacing: { marginBottom: 16 },
 });
