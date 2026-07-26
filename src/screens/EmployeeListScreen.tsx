@@ -9,6 +9,7 @@ import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Pressable,
   Text,
@@ -21,13 +22,30 @@ export default function EmployeeListScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteEmployeeById(id);
-      setEmployees((prev) => prev.filter((emp) => emp.id !== id));
-    } catch {
-      setError("Unable to delete employee.");
-    }
+  const handleDelete = (id: string) => {
+
+    Alert.alert(
+        "Delete Employee",
+        "Are you sure you want to delete this employee record?",
+        [
+            {
+                text: "Cancel",
+                style: "cancel",
+            },
+            {
+                text: "Delete",
+                style: "destructive",
+                onPress: async () => {
+                    try {
+                        await deleteEmployeeById(id);
+                        setEmployees((prev) => prev.filter((emp) => emp.id !== id));
+                      } catch {
+                        setError("Unable to delete employee.");
+                      }
+                },
+            },
+        ]
+    );
   };
 
   const handleUpdate = (employee: Employee) => {
