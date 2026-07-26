@@ -20,6 +20,16 @@ export default function EmployeeListScreen() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteEmployeeById(id);
+      setEmployees((prev) => prev.filter((emp) => emp.id !== id));
+    } catch {
+      setError("Unable to delete employee.");
+    }
+  };
+
   const loadEmployees = async () => {
     if (!user) return;
 
@@ -99,7 +109,7 @@ export default function EmployeeListScreen() {
           <Text>Position: {item.positionTitle}</Text>
 
           <Text>Email: {item.email}</Text>
-          <Pressable onPress={() => deleteEmployeeById(item.id)}>
+          <Pressable onPress={() => handleDelete(item.id)}>
             <Text>Destroy</Text>
           </Pressable>
         </Pressable>
