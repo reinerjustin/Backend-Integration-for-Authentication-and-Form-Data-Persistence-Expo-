@@ -60,7 +60,7 @@ export async function getEmployees(userId: string): Promise<Employee[]> {
   }
 }
 
-export async function getEmployeeById(id: string, userId:string) {
+export async function getEmployeeById(id: string) {
   const docRef = doc(db, "employees", id);
 
   const snapshot = await getDoc(docRef);
@@ -70,27 +70,12 @@ export async function getEmployeeById(id: string, userId:string) {
     throw new Error("Employee not found.");
   }
   
-  if (snapshot.data().userId !== userId) {
-  throw new Error("You do not have permission to view this employee.");
-  }
-
   return {
     id: snapshot.id,
     ...(snapshot.data() as Omit<Employee, "id">),
   };
 }
   
-
-  if (!snapshot.exists()) {
-    throw new Error("Employee not found.");
-  }
-
-  return {
-    id: snapshot.id,
-    ...(snapshot.data() as Omit<Employee, "id">),
-  };
-}
-
 export async function deleteEmployeeById(id: string) {
   try {
     await deleteDoc(doc(db, "employees", id));
