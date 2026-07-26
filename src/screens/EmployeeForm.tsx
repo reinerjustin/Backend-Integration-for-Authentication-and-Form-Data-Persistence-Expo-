@@ -44,7 +44,7 @@ function EmployeeForm() {
 
             alert("Employee information submitted successfully!");
 
-            router.replace("/employees");
+            router.push("/employees");
         } catch(error:any) {
             alert("Submission failed. Please check your internet connection and try again.");
         } finally {
