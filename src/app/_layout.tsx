@@ -30,9 +30,12 @@ function RootLayoutNav() {
 
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ title: "Home" }} />
-      <Stack.Screen name="signin" options={{ title: "Sign In" }} />
-      <Stack.Screen name="signup" options={{ title: "Sign Up" }} />
+      <Stack.Protected guard={!user}>
+        <Stack.Screen name="index" options={{ title: "Home" }} />
+        <Stack.Screen name="signin" options={{ title: "Sign In" }} />
+        <Stack.Screen name="signup" options={{ title: "Sign Up" }} />
+      </Stack.Protected>
+
       <Stack.Protected guard={!!user}>
         <Stack.Screen
           name="employee"
