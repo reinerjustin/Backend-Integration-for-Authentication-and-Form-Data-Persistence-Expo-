@@ -85,6 +85,18 @@ export default function EmployeeListScreen() {
   }
 
   return (
+    <View style={{ flex: 1}}>
+
+        <Pressable
+            style={styles.primaryButton}
+            onPress={() => router.push("/employee")}
+        >
+            <Text style={styles.loadingText}>
+                Add New Employee
+            </Text>
+
+        </Pressable>
+
     <FlatList
       data={employees}
       keyExtractor={(item) => item.id}
@@ -115,5 +127,6 @@ export default function EmployeeListScreen() {
         </Pressable>
       )}
     />
+    </View>
   );
 }
